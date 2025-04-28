@@ -1,0 +1,50 @@
+module left_shift_regi_tb;
+
+    reg clk;
+    reg rst;
+    reg load;
+    reg [3:0] data_in;
+    wire [3:0] q;
+
+   
+    left_shift_regi uut (
+        .clk(clk),
+        .rst(rst),
+        .load(load),
+        .data_in(data_in),
+        .q(q)
+    );
+
+   
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; 
+    end
+
+    
+    initial begin
+        $monitor("Time=%0t | clk=%b | rst=%b | load=%b | data_in=%b | q=%b",
+                 $time, clk, rst, load, data_in, q);
+
+        rst = 1; load = 0; data_in = 4'b0000;
+        #10 rst = 0;
+
+       
+        #10 load = 1; data_in = 4'b1010;
+        #10 load = 0;
+
+        
+        #10;
+        #10;
+        #10;
+
+        
+        #10 rst = 1;
+        #10 rst = 0;
+
+        #10
+      $dumpfile("dump.vcd"); $dumpvars;
+      #200 $finish;
+    end
+
+endmodule
